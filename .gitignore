@@ -1,0 +1,7 @@
+# Editor / OS
+.DS_Store
+Thumbs.db
+*.log
+
+# Node (falls später ein Build-Step ergänzt wird)
+node_modules/
