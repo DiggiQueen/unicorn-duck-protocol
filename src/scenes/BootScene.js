@@ -25,7 +25,9 @@ export default class BootScene extends Phaser.Scene {
 
     // Sammelobjekte
     this.makeFragment(TEX.FRAGMENT, COLOR.CYAN);
-    this.makeGoldenDuck(TEX.GOLDEN_DUCK);
+    // Klassische gelbe Quietsche-Ente (Thema!) + goldene Legenden-Version
+    this.makeDuck(TEX.RUBBER_DUCK, 0xffe23d, 0xff8c1a, COLOR.GOLD);
+    this.makeDuck(TEX.GOLDEN_DUCK, COLOR.GOLD, 0xff9b1f, COLOR.GOLD);
 
     // Power-Up-Icons
     this.makePowerup(TEX.PU_LASER, COLOR.MAGENTA, 'laser');
@@ -192,19 +194,47 @@ export default class BootScene extends Phaser.Scene {
     g.destroy();
   }
 
-  makeGoldenDuck(key) {
+  // Klassische Quietsche-Enten-Silhouette (für gelbe + goldene Variante).
+  makeDuck(key, body, beak, glow) {
     const g = this.make.graphics({ add: false });
-    const w = 90, h = 80;
-    this.glowShape(g, (gg, c, a, pad) => {
-      gg.fillStyle(c, a);
-      gg.fillEllipse(w / 2, h / 2 + 10, w - 16 + pad * 2, h - 28 + pad * 2);
-      gg.fillCircle(w - 24, 26, 18 + pad);
-    }, COLOR.GOLD, COLOR.GOLD);
-    g.fillStyle(0xff9b1f, 1);
-    g.fillTriangle(w - 8, 22, w - 8, 34, w + 10, 28);
-    g.fillStyle(0x2a1a00, 1);
-    g.fillCircle(w - 20, 22, 3);
-    g.generateTexture(key, w + 10, h + 8);
+    const w = 108, h = 96;
+
+    // Neon-Glow-Aura
+    g.fillStyle(glow, 0.10); g.fillCircle(54, 52, 50);
+    g.fillStyle(glow, 0.10); g.fillCircle(60, 50, 40);
+
+    // Körper (fette untere Ellipse) + erhobener Schwanz
+    g.fillStyle(body, 1);
+    g.fillEllipse(52, 62, 84, 52);
+    g.fillTriangle(12, 60, 34, 44, 26, 70); // Schwanz hoch-links
+
+    // Kopf (großer Kreis oben rechts)
+    g.fillCircle(78, 34, 27);
+
+    // Wange-Glanz
+    g.fillStyle(0xffffff, 0.18);
+    g.fillEllipse(68, 56, 40, 18);
+    g.fillStyle(0xffffff, 0.22);
+    g.fillCircle(70, 28, 9);
+
+    // Flügel-Andeutung
+    g.fillStyle(0x000000, 0.10);
+    g.fillEllipse(50, 64, 44, 24);
+
+    // Schnabel (orange, klassisch flach)
+    g.fillStyle(beak, 1);
+    g.fillEllipse(102, 38, 30, 15);
+    g.fillTriangle(96, 31, 116, 38, 96, 45);
+    g.fillStyle(0x000000, 0.12);
+    g.fillRect(90, 38, 22, 2); // Schnabelspalt
+
+    // Auge
+    g.fillStyle(0x1a1206, 1);
+    g.fillCircle(84, 27, 4.5);
+    g.fillStyle(0xffffff, 1);
+    g.fillCircle(85.5, 25, 1.8);
+
+    g.generateTexture(key, w + 12, h + 8);
     g.destroy();
   }
 

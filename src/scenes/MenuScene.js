@@ -13,9 +13,16 @@ export default class MenuScene extends Phaser.Scene {
     this.audio = this.registry.get('audio');
     this.bg = new ParallaxBackground(this);
 
-    // dekorative Nova
-    const nova = this.add.image(GAME.WIDTH / 2, 300, TEX.NOVA).setScale(2.4).setDepth(5);
-    this.tweens.add({ targets: nova, y: 280, duration: 1600, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+    // dekorative Nova (links) + die zu rettende Gummiente (rechts)
+    const nova = this.add.image(GAME.WIDTH / 2 - 150, 300, TEX.NOVA).setScale(2.2).setDepth(5);
+    this.tweens.add({ targets: nova, y: 282, duration: 1600, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+
+    const duck = this.add.image(GAME.WIDTH / 2 + 170, 300, TEX.RUBBER_DUCK).setScale(2.0).setDepth(5);
+    this.tweens.add({ targets: duck, y: 318, duration: 1300, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+    this.tweens.add({ targets: duck, angle: -6, duration: 1300, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+    this.add.text(GAME.WIDTH / 2 + 170, 380, '★ RETTE MICH!', {
+      fontFamily: 'Trebuchet MS', fontSize: '18px', color: '#ffd34f', fontStyle: 'bold',
+    }).setOrigin(0.5).setDepth(6).setShadow(0, 0, '#ffd34f', 10, true, true);
 
     const title = this.add.text(GAME.WIDTH / 2, 130, 'UNICORN: DUCK PROTOCOL', {
       fontFamily: 'Trebuchet MS', fontSize: '56px', color: '#ffffff', fontStyle: 'bold',

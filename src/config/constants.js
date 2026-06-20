@@ -70,6 +70,7 @@ export const TEX = {
   ROCKET: 'rocket',
   FRAGMENT: 'fragment',
   GOLDEN_DUCK: 'golden_duck',
+  RUBBER_DUCK: 'rubber_duck',
   PARTICLE: 'particle',
   GLOW: 'glow',
   PU_LASER: 'pu_laser',
