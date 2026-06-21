@@ -118,8 +118,32 @@ export default class GameScene extends Phaser.Scene {
   }
 
   spawnFragment(x, y, speed) {
+    this.spawnCollectible(x, y, speed, 'fragment');
+  }
+
+  // Typgesteuertes Sammelobjekt: 'fragment' (10), 'gem' (25), 'duck' (50).
+  spawnCollectible(x, y, speed, kind = 'fragment') {
     const f = this.fragments.get();
-    if (f) f.spawn(x, y, speed);
+    if (!f) return;
+    const map = {
+      fragment: { texture: TEX.FRAGMENT, value: SCORE.FRAGMENT, kind: 'fragment' },
+      gem: { texture: TEX.GEM, value: SCORE.GEM, kind: 'gem' },
+      duck: { texture: TEX.MINI_DUCK, value: SCORE.MINI_DUCK, kind: 'duck' },
+    };
+    f.spawn(x, y, speed, map[kind] || map.fragment);
+  }
+
+  // Aufploppende "+Punkte"-Anzeige beim Sammeln.
+  popupScore(x, y, amount, color) {
+    const hex = '#' + color.toString(16).padStart(6, '0');
+    const t = this.add.text(x, y, '+' + amount, {
+      fontFamily: 'Trebuchet MS', fontSize: '22px', color: hex, fontStyle: 'bold',
+    }).setOrigin(0.5).setDepth(70);
+    t.setShadow(0, 0, hex, 8, true, true);
+    this.tweens.add({
+      targets: t, y: y - 52, alpha: 0, duration: 700, ease: 'Quad.easeOut',
+      onComplete: () => t.destroy(),
+    });
   }
 
   spawnPowerUp(x, y, speed, type) {
@@ -196,10 +220,15 @@ export default class GameScene extends Phaser.Scene {
 
   onCollectFragment(player, frag) {
     if (!frag.active) return;
+    const val = frag.value || SCORE.FRAGMENT;
+    const kind = frag.kind;
+    const col = kind === 'duck' ? COLOR.GOLD : (kind === 'gem' ? COLOR.MAGENTA : COLOR.CYAN);
+    const x = frag.x, y = frag.y;
     frag.deactivate();
-    this.addScore(SCORE.FRAGMENT);
-    this.audio?.fragment();
-    this.juice.spark(frag.x, frag.y, COLOR.GOLD, 5);
+    this.addScore(val);
+    if (kind === 'duck') this.audio?.powerup(); else this.audio?.fragment();
+    this.juice.spark(x, y, col, kind === 'fragment' ? 5 : 12);
+    this.popupScore(x, y, val, col);
     this.events.emit('fragment-collected');
   }
 

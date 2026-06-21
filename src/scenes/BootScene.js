@@ -25,6 +25,8 @@ export default class BootScene extends Phaser.Scene {
 
     // Sammelobjekte
     this.makeFragment(TEX.FRAGMENT, COLOR.CYAN);
+    this.makeGem(TEX.GEM);
+    this.makeMiniDuck(TEX.MINI_DUCK);
     // Klassische gelbe Quietsche-Ente (Thema!) + goldene Legenden-Version
     this.makeDuck(TEX.RUBBER_DUCK, 0xffe23d, 0xff8c1a, COLOR.GOLD);
     this.makeDuck(TEX.GOLDEN_DUCK, COLOR.GOLD, 0xff9b1f, COLOR.GOLD);
@@ -190,6 +192,42 @@ export default class BootScene extends Phaser.Scene {
     }, color, COLOR.GOLD);
     g.fillStyle(COLOR.WHITE, 0.8);
     g.fillCircle(s / 2, s / 2, 3);
+    g.generateTexture(key, s, s);
+    g.destroy();
+  }
+
+  // Sechseckiger Neon-Edelstein (Sammelobjekt, 25 P.)
+  makeGem(key) {
+    const g = this.make.graphics({ add: false });
+    const s = 30, cx = s / 2, cy = s / 2, r = s / 2 - 3;
+    this.glowShape(g, (gg, c, a, pad) => {
+      gg.fillStyle(c, a);
+      const pts = [];
+      for (let i = 0; i < 6; i++) {
+        const ang = Math.PI / 3 * i - Math.PI / 2;
+        pts.push({ x: cx + Math.cos(ang) * (r + pad), y: cy + Math.sin(ang) * (r + pad) });
+      }
+      gg.fillPoints(pts, true);
+    }, COLOR.MAGENTA, COLOR.VIOLET);
+    g.fillStyle(COLOR.WHITE, 0.7);
+    g.fillCircle(cx, cy, 3);
+    g.generateTexture(key, s, s);
+    g.destroy();
+  }
+
+  // Kleines Gummientchen (Sammelobjekt, 50 P. – themenpassender Bonus)
+  makeMiniDuck(key) {
+    const g = this.make.graphics({ add: false });
+    const s = 42;
+    g.fillStyle(COLOR.GOLD, 0.12); g.fillCircle(20, 22, 20);
+    g.fillStyle(0xffe23d, 1);
+    g.fillEllipse(20, 26, 30, 20);          // Körper
+    g.fillCircle(29, 15, 10);               // Kopf
+    g.fillStyle(0xffffff, 0.22); g.fillCircle(26, 12, 3.5);
+    g.fillStyle(0xff8c1a, 1);
+    g.fillTriangle(36, 12, 46, 16, 36, 20); // Schnabel
+    g.fillStyle(0x1a1206, 1); g.fillCircle(31, 13, 2.2);
+    g.fillStyle(0xffffff, 1); g.fillCircle(31.8, 12.2, 0.9);
     g.generateTexture(key, s, s);
     g.destroy();
   }

@@ -38,19 +38,36 @@ export default class Spawner {
     const type = Phaser.Utils.Array.GetRandom(p.enemies);
     this.scene.spawnEnemy(type, p.enemySpeed);
 
-    // Fragment-Begleitung (im erreichbaren Höhenband)
+    // Sammelobjekte als Muster (Bogen/Zickzack/Linie), im erreichbaren Band
     if (Math.random() < p.fragmentChance) {
-      const n = Phaser.Math.Between(1, 3);
-      const baseY = Phaser.Math.Between(470, 585);
-      for (let i = 0; i < n; i++) {
-        this.scene.spawnFragment(GAME.WIDTH + 40 + i * 36, baseY, this.scene.worldSpeed);
-      }
+      this.spawnCollectiblePattern();
+    }
+    // gelegentlich ein Bonus-Gummientchen (50 P.)
+    if (Math.random() < 0.13) {
+      this.scene.spawnCollectible(GAME.WIDTH + 60, Phaser.Math.Between(490, 560), this.scene.worldSpeed, 'duck');
     }
 
     // Power-Up (im erreichbaren Höhenband)
     if (Math.random() < p.powerupChance) {
       const t = Phaser.Utils.Array.GetRandom(this._puTypes);
       this.scene.spawnPowerUp(GAME.WIDTH + 60, Phaser.Math.Between(480, 565), this.scene.worldSpeed, t);
+    }
+  }
+
+  // Sammelobjekte in einem von drei Mustern (Linie / Bogen / Zickzack).
+  spawnCollectiblePattern() {
+    const sp = this.scene.worldSpeed;
+    const pattern = Phaser.Math.Between(0, 2);
+    const baseY = Phaser.Math.Between(515, 565);
+    const n = Phaser.Math.Between(3, 6);
+    const mid = Math.floor(n / 2);
+    for (let i = 0; i < n; i++) {
+      let y = baseY;
+      if (pattern === 1) y = baseY - Math.sin((i / (n - 1)) * Math.PI) * 70; // Bogen
+      else if (pattern === 2) y = baseY - (i % 2) * 60;                       // Zickzack
+      // gelegentlich ein Edelstein in der Mitte einer Linie
+      const kind = (pattern === 0 && i === mid && Math.random() < 0.5) ? 'gem' : 'fragment';
+      this.scene.spawnCollectible(GAME.WIDTH + 40 + i * 46, y, sp, kind);
     }
   }
 

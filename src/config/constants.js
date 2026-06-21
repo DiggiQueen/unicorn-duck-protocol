@@ -38,6 +38,8 @@ export const WEAPON = {
 // Punkte
 export const SCORE = {
   FRAGMENT: 10,
+  GEM: 25,
+  MINI_DUCK: 50,
   ENEMY: 25,
   BOSS_HIT: 50,
   BOSS_KILL: 500,
@@ -69,6 +71,8 @@ export const TEX = {
   ENEMY_BULLET: 'enemy_bullet',
   ROCKET: 'rocket',
   FRAGMENT: 'fragment',
+  GEM: 'gem',
+  MINI_DUCK: 'mini_duck',
   GOLDEN_DUCK: 'golden_duck',
   RUBBER_DUCK: 'rubber_duck',
   PARTICLE: 'particle',
