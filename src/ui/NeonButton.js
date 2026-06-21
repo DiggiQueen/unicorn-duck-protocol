@@ -24,19 +24,23 @@ export default class NeonButton extends Phaser.GameObjects.Container {
     }).setOrigin(0.5);
     this.label.setShadow(0, 0, '#' + color.toString(16).padStart(6, '0'), 12, true, true);
 
-    this.add([this.glow, this.bg, this.label]);
-    this.setSize(w, h);
-    this.setInteractive(new Phaser.Geom.Rectangle(-w / 2, -h / 2, w, h), Phaser.Geom.Rectangle.Contains);
+    // Zuverlässige, volle Klickfläche: ein transparentes Rechteck als Hit-Target.
+    // (Container-Trefferzonen sind je nach Setup unzuverlässig.)
+    this.hit = scene.add.rectangle(0, 0, w + 12, h + 12, 0x000000, 0.001)
+      .setInteractive({ useHandCursor: true });
 
-    this.on('pointerover', () => {
+    this.add([this.glow, this.bg, this.label, this.hit]);
+    this.setSize(w, h);
+
+    this.hit.on('pointerover', () => {
       scene.tweens.add({ targets: this, scale: 1.06, duration: 120 });
       this.glow.clear(); this._draw(this.glow, w, h, color, 0.25, true);
     });
-    this.on('pointerout', () => {
+    this.hit.on('pointerout', () => {
       scene.tweens.add({ targets: this, scale: 1, duration: 120 });
       this.glow.clear();
     });
-    this.on('pointerdown', () => {
+    this.hit.on('pointerdown', () => {
       scene.tweens.add({ targets: this, scale: 0.96, duration: 60, yoyo: true });
       onClick && onClick();
     });

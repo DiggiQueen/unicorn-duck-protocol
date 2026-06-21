@@ -89,9 +89,13 @@ export default class HudScene extends Phaser.Scene {
       }).setOrigin(0.5);
       c.add([g, t]);
       c.setSize(100, 100);
-      c.setInteractive(new Phaser.Geom.Circle(0, 0, 50), Phaser.Geom.Circle.Contains);
-      c.on('pointerdown', () => this.game_.events.emit(evt));
-      c.setAlpha(this.sys.game.device.input.touch ? 0.9 : 0.0);
+      const isTouch = this.sys.game.device.input.touch;
+      c.setAlpha(isTouch ? 0.9 : 0.0);
+      // Auf Desktop NICHT interaktiv (sonst fangen unsichtbare Kreise Klicks ab).
+      if (isTouch) {
+        c.setInteractive(new Phaser.Geom.Circle(0, 0, 50), Phaser.Geom.Circle.Contains);
+        c.on('pointerdown', () => this.game_.events.emit(evt));
+      }
       return c;
     };
     mk(110, 'SPRUNG', COLOR.CYAN, 'touch-jump');
