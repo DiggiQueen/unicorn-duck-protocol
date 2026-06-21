@@ -17,7 +17,7 @@ export default class ShadowDuckDrone extends Phaser.Physics.Arcade.Sprite {
     this.scoreValue = 25;
     this._baseY = y;
     this._t = 0;
-    this._amp = Phaser.Math.Between(30, 70);
+    this._amp = Phaser.Math.Between(18, 38);
     this._freq = Phaser.Math.FloatBetween(0.003, 0.006);
     this.setTint(0xffffff);
   }

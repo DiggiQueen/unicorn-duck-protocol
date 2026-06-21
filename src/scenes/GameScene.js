@@ -104,15 +104,16 @@ export default class GameScene extends Phaser.Scene {
   // --- Spawn-Helfer (vom Spawner aufgerufen) -----------------------------
 
   spawnEnemy(type, speed) {
+    // Spawn-Höhen im per Sprung/Doppelsprung erreichbaren Band (~470..580).
     if (type === 'drone') {
       const e = this.drones.get();
-      if (e) e.spawn(GAME.WIDTH + 60, Phaser.Math.Between(120, GAME.GROUND_Y - 120), speed);
+      if (e) e.spawn(GAME.WIDTH + 60, Phaser.Math.Between(470, 580), speed);
     } else if (type === 'slime') {
       const e = this.slimes.get();
       if (e) e.spawn(GAME.WIDTH + 60, speed);
     } else if (type === 'goose') {
       const e = this.geese.get();
-      if (e) e.spawn(GAME.WIDTH + 80, Phaser.Math.Between(140, GAME.GROUND_Y - 120), speed);
+      if (e) e.spawn(GAME.WIDTH + 80, Phaser.Math.Between(480, 580), speed);
     }
   }
 
@@ -222,7 +223,7 @@ export default class GameScene extends Phaser.Scene {
     // Feld leeren
     this.enemyGroups.forEach(g => g.children.each(e => { if (e.active) e.deactivate(); }));
 
-    this.boss = new BossEmperorDuck(this, GAME.WIDTH + 200, 220);
+    this.boss = new BossEmperorDuck(this, GAME.WIDTH + 200, 470);
     this.physics.add.overlap(this.weapon.projectiles, this.boss, this.onBulletHitBoss, null, this);
     this.physics.add.overlap(this.player, this.boss, this.onPlayerTouchBoss, null, this);
 

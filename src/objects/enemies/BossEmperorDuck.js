@@ -19,7 +19,7 @@ export default class BossEmperorDuck extends Phaser.Physics.Arcade.Sprite {
     this.vulnerable = false;
     this.alive = true;
     this._homeX = scene.scale.width - 230;
-    this._homeY = 220;
+    this._homeY = 470; // tief genug, um per kleinem Sprung getroffen zu werden
 
     this.enterState('ENTER');
     this._bob = scene.tweens.add({

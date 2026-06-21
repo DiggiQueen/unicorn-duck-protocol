@@ -38,19 +38,19 @@ export default class Spawner {
     const type = Phaser.Utils.Array.GetRandom(p.enemies);
     this.scene.spawnEnemy(type, p.enemySpeed);
 
-    // Fragment-Begleitung
+    // Fragment-Begleitung (im erreichbaren Höhenband)
     if (Math.random() < p.fragmentChance) {
       const n = Phaser.Math.Between(1, 3);
-      const baseY = Phaser.Math.Between(180, GAME.GROUND_Y - 60);
+      const baseY = Phaser.Math.Between(470, 585);
       for (let i = 0; i < n; i++) {
         this.scene.spawnFragment(GAME.WIDTH + 40 + i * 36, baseY, this.scene.worldSpeed);
       }
     }
 
-    // Power-Up
+    // Power-Up (im erreichbaren Höhenband)
     if (Math.random() < p.powerupChance) {
       const t = Phaser.Utils.Array.GetRandom(this._puTypes);
-      this.scene.spawnPowerUp(GAME.WIDTH + 60, Phaser.Math.Between(160, GAME.GROUND_Y - 80), this.scene.worldSpeed, t);
+      this.scene.spawnPowerUp(GAME.WIDTH + 60, Phaser.Math.Between(480, 565), this.scene.worldSpeed, t);
     }
   }
 
