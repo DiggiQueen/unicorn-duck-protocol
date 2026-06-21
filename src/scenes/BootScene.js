@@ -154,29 +154,47 @@ export default class BootScene extends Phaser.Scene {
     g.destroy();
   }
 
+  // Boss: rote Teufels-Gummiente mit Hörnern, zum Spieler (links) gewandt.
   makeBoss(key) {
     const g = this.make.graphics({ add: false });
-    const w = 260, h = 220;
-    this.glowShape(g, (gg, c, a, pad) => {
-      gg.fillStyle(c, a);
-      gg.fillRoundedRect(20 - pad, 50 - pad, w - 40 + pad * 2, h - 70 + pad * 2, 30); // Mech-Körper
-      gg.fillCircle(w - 56, 60, 46 + pad); // Kopf
-    }, COLOR.DANGER, COLOR.MAGENTA);
-    // Panzerplatten
-    g.lineStyle(4, COLOR.GOLD, 0.9);
-    g.strokeRoundedRect(34, 64, w - 68, h - 98, 24);
-    // Schnabel
-    g.fillStyle(COLOR.GOLD, 1);
-    g.fillTriangle(w - 14, 48, w - 14, 74, w + 18, 61);
-    // Augen (böse)
-    g.fillStyle(COLOR.CYAN, 1);
-    g.fillCircle(w - 66, 52, 9);
-    g.fillStyle(COLOR.WHITE, 1);
-    g.fillCircle(w - 66, 52, 4);
-    // Kernreaktor
-    g.fillStyle(COLOR.GOLD, 0.9);
-    g.fillCircle(w / 2 - 20, h / 2 + 20, 18);
-    g.generateTexture(key, w + 24, h + 12);
+    const w = 284, h = 232;
+    const body = 0xff2e3e, dark = 0x7a0010, beak = 0xff8c1a;
+
+    // Gefahren-Glow-Aura
+    g.fillStyle(COLOR.DANGER, 0.10); g.fillCircle(150, 124, 124);
+    g.fillStyle(COLOR.MAGENTA, 0.08); g.fillCircle(135, 124, 104);
+
+    // Körper (große Ente) + Schwanz hoch-rechts
+    g.fillStyle(body, 1);
+    g.fillEllipse(152, 152, 210, 132);
+    g.fillTriangle(252, 142, 206, 104, 222, 162);
+
+    // Kopf (oben-links, zum Spieler gewandt)
+    g.fillCircle(88, 84, 60);
+
+    // Bauch-/Wangen-Glanz
+    g.fillStyle(0xffffff, 0.12); g.fillEllipse(152, 164, 120, 50);
+    g.fillStyle(0xffffff, 0.14); g.fillCircle(108, 70, 20);
+
+    // Teufelshörner (dunkelrot) auf dem Kopf
+    g.fillStyle(dark, 1);
+    g.fillTriangle(58, 40, 76, 40, 62, 8);
+    g.fillTriangle(104, 38, 122, 38, 118, 6);
+    g.fillStyle(COLOR.GOLD, 0.85); g.fillCircle(62, 9, 2.5); g.fillCircle(118, 7, 2.5);
+
+    // Schnabel (orange, nach links)
+    g.fillStyle(beak, 1);
+    g.fillEllipse(34, 92, 54, 26);
+    g.fillTriangle(46, 78, 2, 92, 46, 106);
+    g.fillStyle(0x000000, 0.15); g.fillRect(8, 92, 46, 3);
+
+    // Böses Auge + gesenkte Braue
+    g.fillStyle(0xffffff, 1); g.fillCircle(82, 74, 11);
+    g.fillStyle(COLOR.DANGER, 1); g.fillCircle(79, 76, 5.5);
+    g.fillStyle(0x000000, 1); g.fillCircle(79, 76, 2.6);
+    g.fillStyle(dark, 1); g.fillTriangle(100, 56, 64, 66, 64, 74);
+
+    g.generateTexture(key, w, h);
     g.destroy();
   }
 
