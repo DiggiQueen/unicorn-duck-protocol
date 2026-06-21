@@ -34,14 +34,26 @@ export default class MenuScene extends Phaser.Scene {
       fontFamily: 'Trebuchet MS', fontSize: '20px', color: '#39f6ff',
     }).setOrigin(0.5).setDepth(6);
 
-    // Highscore
-    const hs = ScoreStore.getHighscore();
-    this.add.text(GAME.WIDTH / 2, 430, 'HIGHSCORE: ' + hs, {
-      fontFamily: 'Trebuchet MS', fontSize: '26px', color: '#ffd34f', fontStyle: 'bold',
-    }).setOrigin(0.5).setDepth(6).setShadow(0, 0, '#ffd34f', 12, true, true);
+    // Bestenliste (Top 3 mit Namen)
+    const list = ScoreStore.getList();
+    this.add.text(GAME.WIDTH / 2, 412, '🏆 BESTENLISTE', {
+      fontFamily: 'Trebuchet MS', fontSize: '20px', color: '#ffd34f', fontStyle: 'bold',
+    }).setOrigin(0.5).setDepth(6).setShadow(0, 0, '#ffd34f', 10, true, true);
+    const medals = ['🥇', '🥈', '🥉'];
+    if (list.length === 0) {
+      this.add.text(GAME.WIDTH / 2, 446, 'Noch kein Eintrag – spiel die erste Runde!', {
+        fontFamily: 'Trebuchet MS', fontSize: '15px', color: '#bdb3e0',
+      }).setOrigin(0.5).setDepth(6);
+    } else {
+      list.slice(0, 3).forEach((e, i) => {
+        this.add.text(GAME.WIDTH / 2, 442 + i * 26, `${medals[i]}  ${e.name.padEnd(10, ' ')}  ${e.score}`, {
+          fontFamily: 'Courier New, monospace', fontSize: '18px', color: i === 0 ? '#ffffff' : '#cfc6ec',
+        }).setOrigin(0.5).setDepth(6);
+      });
+    }
 
     // Start
-    new NeonButton(this, GAME.WIDTH / 2, 510, '▶  START', () => {
+    new NeonButton(this, GAME.WIDTH / 2, 545, '▶  START', () => {
       this.audio?.unlock();
       this.audio?.stopMusic();
       this.scene.start('Game');
